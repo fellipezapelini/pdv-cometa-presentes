@@ -1,0 +1,28 @@
+# Segredos e dados — nunca versionar
+.env
+.env.*
+!.env.example
+*.sql
+*.sql.gz
+*.bak
+
+# Dependências e builds
+backend/vendor/
+frontend/node_modules/
+frontend/dist/
+frontend/dist-*/
+backend/public/build/
+backend/public/uploads/
+
+# Gerados pelo Laravel
+backend/bootstrap/cache/*.php
+backend/storage/logs/*.log
+backend/storage/framework/**/*
+!backend/storage/framework/**/.gitignore
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.claude/
