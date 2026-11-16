@@ -187,7 +187,7 @@ Além de desenvolver, conduzi a implantação: parametrização do sistema, migr
 
 ## Autor
 
-**Fellipe Zapelini** · [LinkedIn](#https://www.linkedin.com/in/fellipe-zapelini-080a24288/) · [GitHub](#https://github.com/fellipezapelini)
+**Fellipe Zapelini** · [LinkedIn](https://www.linkedin.com/in/fellipe-zapelini-080a24288/) · [GitHub](https://github.com/fellipezapelini)
 
 ---
 
