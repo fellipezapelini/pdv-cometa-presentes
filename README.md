@@ -134,12 +134,18 @@ O front-end é uma SPA (React Router) e o back-end é uma API REST stateless aut
 
 ## Capturas de tela
 
-<!-- Coloque aqui 3 ou 4 prints, por exemplo:
-     ![Loja virtual](docs/loja.png)
+### Loja virtual
+![Página inicial da loja virtual](docs/loja-inicio.png)
+
+![Vitrine de produtos e rodapé da loja](docs/loja-produtos.png)
+
+### Painel do vendedor
+<img src="docs/painel-menu.png" alt="Menu do painel do vendedor: Dashboard, Produtos, PDV, Clientes & Fiado, Carnês, Movimentações, Notas Fiscais, Despesas, Histórico de Vendas e Recebimentos" width="220">
+
+<!-- Próximos prints sugeridos (com dados de clientes borrados):
      ![PDV](docs/pdv.png)
      ![Fiado em envelopes](docs/fiado.png)
-     ![Entrada de NF-e com conversão de embalagem](docs/entrada-nf.png)
-     Antes de tirar os prints, esconda nomes, CPFs e telefones de clientes. -->
+     ![Entrada de NF-e com conversão de embalagem](docs/entrada-nf.png) -->
 
 ## Como rodar localmente
 
