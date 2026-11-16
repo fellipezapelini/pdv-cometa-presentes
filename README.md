@@ -140,12 +140,29 @@ O front-end é uma SPA (React Router) e o back-end é uma API REST stateless aut
 ![Vitrine de produtos e rodapé da loja](docs/loja-produtos.png)
 
 ### Painel do vendedor
-<img src="docs/painel-menu.png" alt="Menu do painel do vendedor: Dashboard, Produtos, PDV, Clientes & Fiado, Carnês, Movimentações, Notas Fiscais, Despesas, Histórico de Vendas e Recebimentos" width="220">
 
-<!-- Próximos prints sugeridos (com dados de clientes borrados):
-     ![PDV](docs/pdv.png)
-     ![Fiado em envelopes](docs/fiado.png)
-     ![Entrada de NF-e com conversão de embalagem](docs/entrada-nf.png) -->
+> Valores financeiros borrados e clientes identificados só pelo primeiro nome, para proteger os dados da loja.
+
+**Ponto de venda:** venda à vista, no fiado ou no carnê
+![Tela do PDV](docs/pdv.png)
+
+**Clientes & Fiado:** envelopes por família
+![Clientes e envelopes de fiado](docs/fiado.png)
+
+**Carnês:** parcelas com vencimento, baixa e reimpressão
+![Carnês com parcelas pendentes](docs/carnes.png)
+
+**Produtos:** valor do estoque, alertas de EAN e exportação para Excel
+![Lista de produtos com resumo do estoque](docs/produtos.png)
+
+**Entrada de mercadoria:** importação do XML da NF-e e rascunhos
+![Notas fiscais de fornecedores](docs/entrada-nf.png)
+
+<details>
+<summary>Menu do painel</summary>
+
+<img src="docs/painel-menu.png" alt="Menu do painel do vendedor" width="220">
+</details>
 
 ## Como rodar localmente
 
