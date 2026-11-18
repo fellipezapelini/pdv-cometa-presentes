@@ -36,6 +36,7 @@ class ProdutoController extends Controller
         $data = $request->validate([
             'nome'             => 'required|string|max:200',
             'nome_vitrine'     => 'nullable|string|max:200',
+            'ncm'              => ['nullable', 'regex:/^\d{8}$/'],
             'descricao'        => 'nullable|string',
             'sku'           => 'nullable|string|unique:produtos,sku',
             'categoria_id'     => 'required|exists:categorias,id',
@@ -56,6 +57,7 @@ class ProdutoController extends Controller
         $data = $request->validate([
             'nome'            => 'sometimes|string|max:200',
             'nome_vitrine'    => 'nullable|string|max:200',
+            'ncm'             => ['sometimes', 'nullable', 'regex:/^\d{8}$/'],
             'descricao'       => 'nullable|string',
             'sku'             => "sometimes|nullable|string|unique:produtos,sku,{$produto->id}",
             'categoria_id'    => 'sometimes|exists:categorias,id',

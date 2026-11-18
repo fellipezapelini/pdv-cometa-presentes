@@ -12,7 +12,7 @@ function fmt(v) {
 }
 
 const camposVazios = {
-  nome: '', nome_vitrine: '', sku: '', categoria_id: '', preco_custo: '', preco_venda: '',
+  nome: '', nome_vitrine: '', sku: '', ncm: '', categoria_id: '', preco_custo: '', preco_venda: '',
   quantidade: '', estoque_minimo: '5', descricao: '', visivel_vitrine: true,
 }
 
@@ -108,7 +108,7 @@ export default function Produtos() {
 
   function abrirEditar(p) {
     setForm({
-      nome: p.nome, nome_vitrine: p.nome_vitrine || '', sku: p.sku || '', categoria_id: p.categoria_id,
+      nome: p.nome, nome_vitrine: p.nome_vitrine || '', sku: p.sku || '', ncm: p.ncm || '', categoria_id: p.categoria_id,
       preco_custo: p.preco_custo, preco_venda: p.preco_venda,
       quantidade: p.quantidade, estoque_minimo: p.estoque_minimo,
       descricao: p.descricao || '', visivel_vitrine: p.visivel_vitrine,
@@ -122,6 +122,7 @@ export default function Produtos() {
     salvar.mutate({
       ...form,
       sku: form.sku?.trim() || null,
+      ncm: form.ncm?.length === 8 ? form.ncm : null,
       nome_vitrine: form.nome_vitrine?.trim() || null,
       preco_custo: parseFloat(form.preco_custo),
       preco_venda: parseFloat(form.preco_venda),
@@ -316,6 +317,12 @@ export default function Produtos() {
             <div className="form-group">
               <label>EAN (código de barras)</label>
               <input value={form.sku || ''} onChange={e => setForm(p => ({ ...p, sku: e.target.value }))} placeholder="opcional" />
+            </div>
+            <div className="form-group">
+              <label>NCM <span style={{ fontWeight: 400, color: 'var(--text-3)' }}>(classificação fiscal)</span></label>
+              <input value={form.ncm || ''} inputMode="numeric" placeholder="8 dígitos — vem na nota de compra"
+                onChange={e => setForm(p => ({ ...p, ncm: e.target.value.replace(/\D/g, '').slice(0, 8) }))}
+                style={{ fontFamily: 'monospace', borderColor: form.ncm && form.ncm.length !== 8 ? 'var(--danger)' : undefined }} />
             </div>
             <div className="form-group">
               <label>Categoria</label>

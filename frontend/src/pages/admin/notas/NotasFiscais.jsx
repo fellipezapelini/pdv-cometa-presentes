@@ -40,6 +40,7 @@ function parseNFe(xmlString) {
       nome_nf: nome,
       ean_nf: ean(get('prod cEAN', det)),
       ean_unidade: ean(get('prod cEANTrib', det)),
+      ncm: get('prod NCM', det).replace(/\D/g, ''),
       unidade_nf: uCom || 'UN',
       quantidade_nf: qCom,
       // custo de 1 item da nota (usa o total da linha para não perder centavos)
@@ -61,7 +62,7 @@ function parseNFe(xmlString) {
 
 const novoItem = (base = {}) => ({
   key: `${Date.now()}-${Math.random()}`,
-  nome_nf: '', ean_nf: '', ean_unidade: '', unidade_nf: 'UN', quantidade_nf: 1, custo_nf: '',
+  nome_nf: '', ean_nf: '', ean_unidade: '', ncm: '', unidade_nf: 'UN', quantidade_nf: 1, custo_nf: '',
   mult1: 1, mult2: 1, dica: null,
   modo: 'novo', produto: null, novo_nome: '', novo_ean: '', categoria_id: '',
   preco_venda: '', origem: null, lembrar: true, aberto: true,
@@ -175,6 +176,12 @@ function LinhaNota({ it, onChange, onRemove, categorias }) {
               <div>
                 <label style={lbl}>EAN na nota</label>
                 <input value={it.ean_nf} onChange={e => set({ ean_nf: e.target.value })} style={{ fontSize: 13, fontFamily: 'monospace' }} placeholder="—" />
+              </div>
+              <div>
+                <label style={lbl}>NCM</label>
+                <input value={it.ncm || ''} onChange={e => set({ ncm: e.target.value.replace(/\D/g, '').slice(0, 8) })}
+                  style={{ fontSize: 13, fontFamily: 'monospace', borderColor: it.ncm && it.ncm.length !== 8 ? 'var(--danger)' : undefined }}
+                  placeholder="8 dígitos" inputMode="numeric" title="Classificação fiscal do produto (vem no XML da nota)" />
               </div>
               <div>
                 <label style={lbl}>Quantidade</label>
@@ -392,6 +399,7 @@ export default function NotasFiscais() {
       itens: itens.map(it => ({
         nome_nf: it.nome_nf.trim(),
         ean_nf: it.ean_nf || null,
+        ncm: it.ncm && it.ncm.length === 8 ? it.ncm : null,
         quantidade_nf: num(it.quantidade_nf),
         custo_nf: num(it.custo_nf),
         fator: fatorDe(it),
@@ -560,7 +568,7 @@ export default function NotasFiscais() {
                               <tbody>
                                 {detalhe.itens.map(i => (
                                   <tr key={i.id}>
-                                    <td>{i.quantidade} × {i.nome_produto}<div style={{ fontSize: 10, color: 'var(--text-3)', fontFamily: 'monospace' }}>{i.sku}</div></td>
+                                    <td>{i.quantidade} × {i.nome_produto}<div style={{ fontSize: 10, color: 'var(--text-3)', fontFamily: 'monospace' }}>{i.sku}{i.ncm && ` · NCM ${i.ncm}`}</div></td>
                                     <td style={{ textAlign: 'center' }}>{i.unidades_entrada ?? i.quantidade}{i.fator > 1 && <div style={{ fontSize: 10, color: 'var(--text-3)' }}>× {i.fator}</div>}</td>
                                     <td>{i.produto?.nome || <span style={{ color: 'var(--text-3)' }}>—</span>}</td>
                                     <td style={{ textAlign: 'right' }}>{fmt(i.custo_unidade ?? i.custo_unitario, 2)}</td>

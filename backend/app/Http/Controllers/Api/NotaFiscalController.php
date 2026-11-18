@@ -74,6 +74,7 @@ class NotaFiscalController extends Controller
             'itens'                   => 'required|array|min:1',
             'itens.*.nome_nf'         => 'required|string|max:255',
             'itens.*.ean_nf'          => 'nullable|string|max:30',
+            'itens.*.ncm'             => 'nullable|string|max:12',
             'itens.*.quantidade_nf'   => 'required|numeric|min:0.001',
             'itens.*.custo_nf'        => 'required|numeric|min:0',
             'itens.*.fator'           => 'required|integer|min:1|max:100000',
@@ -118,6 +119,9 @@ class NotaFiscalController extends Controller
                 $unidades = (int) round($item['quantidade_nf'] * $fator);
                 $custoUn  = $fator > 0 ? (float) $item['custo_nf'] / $fator : (float) $item['custo_nf'];
                 $eanNf    = trim($item['ean_nf'] ?? '') ?: null;
+                // NCM: só dígitos; válido apenas com 8 (ex.: "4820.20.00" → "48202000")
+                $ncm      = preg_replace('/\D/', '', (string) ($item['ncm'] ?? ''));
+                $ncm      = strlen($ncm) === 8 && $ncm !== '00000000' ? $ncm : null;
 
                 if (!empty($item['produto_id'])) {
                     $produto = Produto::lockForUpdate()->find($item['produto_id']);
@@ -125,6 +129,8 @@ class NotaFiscalController extends Controller
                         'preco_custo' => round($custoUn, 2),
                         'preco_venda' => $item['preco_venda'],
                         'ativo'       => true,
+                        // NCM só é preenchido se o produto ainda não tiver (não sobrescreve correção manual)
+                        ...($ncm && !$produto->ncm ? ['ncm' => $ncm] : []),
                     ]);
                     $produto->increment('quantidade', $unidades);
                 } else {
@@ -133,12 +139,16 @@ class NotaFiscalController extends Controller
                     $jaExiste = $sku ? Produto::where('sku', $sku)->first() : null;
                     if ($jaExiste) {
                         $produto = $jaExiste;
-                        $produto->update(['preco_custo' => round($custoUn, 2), 'preco_venda' => $item['preco_venda'], 'ativo' => true]);
+                        $produto->update([
+                            'preco_custo' => round($custoUn, 2), 'preco_venda' => $item['preco_venda'], 'ativo' => true,
+                            ...($ncm && !$produto->ncm ? ['ncm' => $ncm] : []),
+                        ]);
                         $produto->increment('quantidade', $unidades);
                     } else {
                         $produto = Produto::create([
                             'nome'           => trim($item['novo_nome']),
                             'sku'            => $sku,
+                            'ncm'            => $ncm,
                             'categoria_id'   => $item['categoria_id'] ?? 1,
                             'preco_custo'    => round($custoUn, 2),
                             'preco_venda'    => $item['preco_venda'],
@@ -151,6 +161,7 @@ class NotaFiscalController extends Controller
                 $nf->itens()->create([
                     'nome_produto'      => $item['nome_nf'],
                     'sku'               => $eanNf,
+                    'ncm'               => $ncm,
                     'quantidade'        => (int) round($item['quantidade_nf']),
                     'fator'             => $fator,
                     'unidades_entrada'  => $unidades,

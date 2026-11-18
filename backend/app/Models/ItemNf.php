@@ -9,7 +9,7 @@ class ItemNf extends Model
     protected $table = 'itens_nf';
     public $timestamps = false;
     protected $fillable = [
-        'nota_fiscal_id', 'nome_produto', 'sku',
+        'nota_fiscal_id', 'nome_produto', 'sku', 'ncm',
         'quantidade', 'fator', 'unidades_entrada', 'custo_unitario', 'custo_unidade', 'preco_venda',
         'produto_id', 'entrada_realizada',
     ];
